@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>logs/tms_roll.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/tms_roll.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         	<MaxFileSize>10MB</MaxFileSize>
+       	</triggeringPolicy>
+	</appender>
+	
+	<appender name="file" class="ch.qos.logback.core.FileAppender">
+		<Encoding>UTF-8</Encoding>
+    	<file>logs/tms_file.log</file>
+    	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/tms_file.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+    	<encoder>
+      		<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file:%line] %msg%n</pattern>
+    	</encoder>
+    	<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         	<MaxFileSize>10MB</MaxFileSize>
+       	</triggeringPolicy>
+  	</appender>
+  
+	<appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+      	<connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+             <driverClass>com.mysql.jdbc.Driver</driverClass>
+             <url>jdbc:mysql://localhost/tms?useUnicode=true&amp;characterEncoding=utf-8</url>
+             <user>root</user>
+             <password>root</password>
+         </connectionSource>
+         <insertHeaders>true</insertHeaders>
+	</appender>
+
+	<!-- project default level -->
+	<logger name="cn.edu.zzu.tms" level="INFO" />
+
+	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="INFO"/>
+
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+		<appender-ref ref="file"/>
+		<appender-ref ref="db"/>
+	</root>
+</configuration>
